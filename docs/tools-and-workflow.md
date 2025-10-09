@@ -8,6 +8,8 @@ title: Development Tools & Workflow
 
 Modern software development relies on a robust set of tools that enable collaboration, version control, and reproducible workflows. This course emphasizes industry-standard practices that you'll encounter in professional engineering environments.
 
+> **📽️ Quick Reference:** See Lecture 1 Slides (01-fundamentals-and-tools-marp.html) for a condensed overview and live demos.
+
 ## Git & Version Control
 
 ### What is Git?
@@ -122,18 +124,17 @@ Markdown is a lightweight markup language that's:
 
 ![Image alt text](image.png)
 
-```python
+```python (cpp, markdown, cs, bash)
 # Code block with syntax highlighting
 def process_data(data):
     return data.clean().transform()
-```
+``` (end of code block)
 
 > Blockquote for important notes
 
 | Column 1 | Column 2 |
 |----------|----------|
 | Data 1   | Data 2   |
-```
 
 ### Documentation as Code
 
@@ -143,6 +144,45 @@ In this course, we treat documentation like code:
 - **Collaborative:** Multiple contributors through Pull Requests
 - **Automated:** Documentation builds automatically from Markdown
 - **Living Documents:** Updated alongside code changes
+
+### Marp for Presentations
+
+Marp converts Markdown to slide presentations:
+
+#### Creating Slides
+```markdown
+---
+marp: true
+paginate: true
+footer: "Your Footer"
+---
+
+# Slide Title
+
+Content goes here
+
+---
+
+# Next Slide
+
+More content
+```
+
+#### Exporting to HTML
+**Method 1: VS Code Extension**
+1. Install "Marp for VS Code" extension
+2. Open your `.md` file
+3. `Ctrl+Shift+P` → "Marp: Export slide deck"
+4. Choose "HTML" format
+
+**Method 2: Command Line**
+```bash
+# Install Marp CLI (one-time)
+npm install -g @marp-team/marp-cli
+
+# Export slides
+marp presentation.md --html --output presentation.html
+```
 
 ## Development Environment Setup
 
@@ -157,24 +197,30 @@ In this course, we treat documentation like code:
 
 Install these extensions for the best development experience:
 
-```bash
-# Git and version control
-- GitLens
-- GitHub Pull Requests and Issues
+**Essential Extensions:**
+- **C/C++** (Microsoft)
+- **C/C++ Themes** (Microsoft)
+- **Git Graph** (mhutchie)
+- **GitHub Pull Requests and Issues** (GitHub)
+- **Marp for VS Code**
+- **Python** (Microsoft)
+- **Python Debugger** (Microsoft)
+- **Python Environments** (Microsoft)
+- **Pylance** (Microsoft)
 
-# Markdown and documentation
-- Markdown All in One
-- Marp for VS Code
+**What they do:**
+- **C/C++**: Language support and IntelliSense for C++
+- **Git Graph**: Visual git history and branching
+- **GitHub Pull Requests**: Complete GitHub workflow integration
+- **Marp**: Create and preview Markdown presentations
+- **Python**: Python language support with IntelliSense
+- **Pylance**: Fast, feature-rich Python language server
 
-# Python development
-- Python
-- Pylint
-- Black Formatter
-
-# C++ development (if needed)
-- C/C++
-- CMake Tools
-```
+**Installation:**
+1. Open VS Code
+2. Go to Extensions view (`Ctrl+Shift+X`)
+3. Search for each extension by name
+4. Click "Install" for each one
 
 ### SSH Key Setup
 
