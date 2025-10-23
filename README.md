@@ -27,7 +27,7 @@ npm run build
 - **Program:** Master Mechanical Engineering
 - **Interests:**
   - Aufbereitung von Messdaten
-  - Darstellen verschiedener Graphen von Messdaten
+  - Darstellen von Messdaten in Diagrammen und Graphen
   - Simulation technischer Systeme
   - Einfache Validierung von Daten
 - **Background:**

@@ -18,7 +18,7 @@ FH OÖ Wels
   - HTL Paul Hahn Maschinenbau
   - Bachelor Entwicklungsing. Maschinenbau Wels
   - Master Entwicklungsing. Maschinenbau Wels
-- **Experience:** [Relevant experience]
+- **Experience:**
   - Leichte Kenntnisse in C++
   - Fundiertere Kenntnisse in Matlab und Scilab
   - Datenalayse mit Matlab
@@ -28,7 +28,7 @@ FH OÖ Wels
 
 ## About Me
 
-- **Interests:** [Your interests related to the course]
+- **Interests:**
   - Erweiterung meiner Programmierkenntnisse
   - Linderung der Angst vor dem Programmieren
   - Datenaufbereitung mithilfe von Programmieren
@@ -40,11 +40,11 @@ FH OÖ Wels
 ## Technical Skills
 
 ### Programming
-- **Comfortable with:** [Languages/tools you know]
+- **Comfortable with:**
   - Matlab
   - Scilab
   - Mathematica
-- **Learning:** [What you're currently learning]
+- **Learning:**
   - Python in diesem Kurs
 
 ---
@@ -53,7 +53,7 @@ FH OÖ Wels
 
 ### Engineering Tools
 - Visual Studio
-- Version control: (Git, SVN, etc.)
+- Version control:
   - Noch nie benutzt
 - Excel
 - Matlab

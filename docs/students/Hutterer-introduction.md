@@ -10,9 +10,8 @@ Educational backround:
 Previous experience with programming or data analysis:
 - Leichte Kenntnisse in C++
 - Fundiertere Kenntnisse in Matlab und Scilab
-- Datenalayse mit Matlab
-- Datenanalyse mit Excel
-- Aufbereitung von Daten in Excel
+- Datenalayse und Aufbereitung mit Matlab
+- Datenanalyse und Aufbereitung mit Excel
 
 Why you're taking this course:
 - Erweiterung meiner Programmierkenntnisse
