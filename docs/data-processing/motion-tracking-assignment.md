@@ -160,7 +160,7 @@ df = pd.merge_asof(accel_df.sort_values('time'),
                    gyro_df.sort_values('time'), 
                    on='time', 
                    direction='nearest',
-                   tolerance=0.01)  # 10ms tolerance
+                   tolerance=0.02)  # 20ms tolerance for sampling rate variations
 
 # Normalize time to start at zero
 df['time'] = df['time'] - df['time'].iloc[0]
@@ -169,8 +169,8 @@ df['time'] = df['time'] - df['time'].iloc[0]
 ### Calculate Sampling Rate
 
 ```python
-# Calculate average sampling rate
-dt = df['time'].diff().mean()
+# Calculate sampling rate (use median for robustness against jitter)
+dt = df['time'].diff().median()
 sampling_rate = 1 / dt
 
 print(f"Total samples: {len(df)}")
@@ -203,6 +203,27 @@ df.rename(columns={
     'gyroscope_z': 'gyro_z'
 }, inplace=True)
 ```
+
+### Check and Convert Gyroscope Units
+
+Many sensor apps export gyroscope data in degrees per second, but the Madgwick filter expects radians per second. Check and convert if needed:
+
+```python
+# Check gyroscope units - many apps export deg/s, but Madgwick expects rad/s
+gyro_cols = ['gyro_x', 'gyro_y', 'gyro_z']
+max_gyro_value = df[gyro_cols].abs().quantile(0.95).max()
+
+if max_gyro_value > 20:  # Heuristic: >20 likely means deg/s
+    print(f"Gyroscope values appear to be in deg/s (max: {max_gyro_value:.1f})")
+    df[gyro_cols] = np.deg2rad(df[gyro_cols])
+    print("Converted gyroscope data from deg/s to rad/s.")
+else:
+    print(f"Gyroscope values appear to be in rad/s (max: {max_gyro_value:.2f})")
+```
+
+:::warning Unit Conversion
+Always verify your sensor units! The AHRS library expects **rad/s** for gyroscope and **m/s²** for accelerometer. Using wrong units will produce completely incorrect orientation estimates.
+:::
 
 ### Plot Raw Sensor Data
 
@@ -337,8 +358,11 @@ for i in range(1, len(df)):
     accel = df[['accel_x_filt', 'accel_y_filt', 'accel_z_filt']].iloc[i].values
     gyro = df[['gyro_x_filt', 'gyro_y_filt', 'gyro_z_filt']].iloc[i].values
     
+    # Normalize accelerometer (Madgwick uses it as direction reference)
+    accel_norm = accel / (np.linalg.norm(accel) + 1e-12)
+    
     # Update orientation estimate
-    quaternions[i] = madgwick.updateIMU(quaternions[i-1], gyr=gyro, acc=accel)
+    quaternions[i] = madgwick.updateIMU(quaternions[i-1], gyr=gyro, acc=accel_norm)
 
 # Store quaternions in dataframe
 df['q_w'] = quaternions[:, 0]
@@ -393,6 +417,10 @@ plt.show()
 
 ### Understanding the Madgwick Algorithm
 
+:::note Optional Appendix
+The following section explains the mathematical foundations of the Madgwick algorithm. **You do NOT need this for the assignment** - the AHRS library handles all the math for you. This section is provided for those who want to understand how the filter works internally.
+:::
+
 For those interested in the mathematical foundation, here is how the Madgwick algorithm works.
 
 :::info Algorithm Overview
@@ -422,7 +450,7 @@ p_0 q_3 + p_1 q_2 - p_2 q_1 + p_3 q_0
 \end{bmatrix}
 $$
 
-**Relationship to rotation matrices:** Quaternion multiplication is equivalent to matrix multiplication of the corresponding rotation matrices. If $\mathbf{R}_a$ is the rotation matrix for quaternion $\mathbf{q}_a$ and $\mathbf{R}_b$ for $\mathbf{q}_b$, then:
+**Relationship to rotation matrices:** Quaternion multiplication is equivalent to matrix multiplication of the corresponding rotation matrices. If $\mathbf{R}_a$ is the rotation matrix for quaternion $\mathbf{q}_a$ and $\mathbf{R}_b$ for $\mathbf{q}_b$, then the composition satisfies:
 
 $$
 \mathbf{q}_a \otimes \mathbf{q}_b \quad \Leftrightarrow \quad \mathbf{R}_a \cdot \mathbf{R}_b
@@ -580,7 +608,7 @@ df['accel_global_z'] = accel_global[:, 2]
 
 ### Remove Gravity from Global Accelerations
 
-After transformation, gravity appears as a constant acceleration in the global Z-axis (assuming Z points up). Subtract it to obtain only the motion-induced accelerations.
+After transformation, gravity appears as a constant acceleration vector in the global frame. The direction depends on how the device was oriented initially, but it's constant during stationary periods. We estimate and subtract this gravity vector to obtain only the motion-induced accelerations.
 
 ```python
 # Gravity is approximately 9.81 m/s² in the negative Z direction
@@ -911,7 +939,9 @@ df['accel_z_corrected'] = df['accel_z_filt'] - accel_bias['accel_z_filt']
 
 ### Required Submission
 
-Submit your work via **Pull Request** to the course repository by **December 2, 2025**.
+Submit your work via **Pull Request** to the course repository.
+
+**Work in your existing `dev` branch of your fork.** At the end, open a PR against the upstream repository. The PR will not be merged and serves as a timestamped submission for grading and feedback.
 
 **What to submit:**
 
@@ -947,9 +977,8 @@ Submit your work via **Pull Request** to the course repository by **December 2, 
 
 ### Submission Instructions
 
-1. Fork the course repository (if not already done)
-2. Create a branch: `imu-workshop-<your_lastname>`
-3. Add your files to the repository:
+1. Work in your fork's `dev` branch
+2. Add your files to the repository:
    ```
    imu-workshop/
    ├── data/
@@ -963,9 +992,9 @@ Submit your work via **Pull Request** to the course repository by **December 2, 
    │   └── ...
    └── README.md
    ```
-4. Commit your changes with meaningful messages
-5. Create a Pull Request with title: **"IMU Workshop - Your Name"**
-6. Ensure the PR description includes:
+3. Commit your changes with meaningful messages
+4. Create a Pull Request with title: **"IMU Workshop - Your Name"**
+5. Ensure the PR description includes:
    - Brief summary of your approach
    - Any issues or questions
    - Links to key visualizations
