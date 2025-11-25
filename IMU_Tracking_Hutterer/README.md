@@ -1,7 +1,7 @@
 # Documentation motion-tracking-assignment
 
 ## What movement you performed
-Für die Messung wurde eine einfache, kontrollierte lineare Bewegung durchgeführt. Das Smartphone wurde flach auf einer Tischplatte platziert und anschließend ungefähr 20 cm in positiver X-Richtung verschoben. Die Bewegung erfolgte geradlinig, ohne bewusste Rotationen oder Neigungen. Zu Beginn und am Ende blieb das Gerät für mehrere Sekunden vollständig still, um Referenz- und Ruhephasen für Filterung und eventuelle Zero-Velocity-Techniken zu ermöglichen.
+Für die Messung wurde eine einfache, kontrollierte lineare Bewegung durchgeführt. Das Smartphone wurde flach auf einer Tischplatte platziert und anschließend ungefähr 20 cm in positiver Y-Richtung verschoben. Die Bewegung erfolgte geradlinig, ohne bewusste Rotationen oder Neigungen. Zu Beginn und am Ende blieb das Gerät für mehrere Sekunden vollständig still, um Referenz- und Ruhephasen für Filterung und eventuelle Zero-Velocity-Techniken zu ermöglichen.
 
 ## Actual measured distance (if applicable)
 Die Bewegung wurde überschlägig abgemessen und ergibt einen Weg von ca. 20cm in Y-Richtung.
